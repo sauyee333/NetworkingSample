@@ -1,12 +1,15 @@
 package com.sauyee333.networksample.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.sauyee333.networksample.R;
 import com.sauyee333.networksample.adapter.RowAdapter;
@@ -32,12 +35,14 @@ public class RetrofitFragment extends Fragment {
     RecyclerView mRecyclerListView;
 
     private RowAdapter mAdapter;
+    private Context mContext;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         ButterKnife.bind(this, view);
+        mContext = getContext();
         setupListConfig();
         getServiceFeed();
         return view;
@@ -60,7 +65,9 @@ public class RetrofitFragment extends Fragment {
 
             @Override
             protected void onFailure(boolean isNetworkFailure, String responseDetails, String responseStatus) {
-
+                if(!TextUtils.isEmpty(responseDetails)) {
+                    Toast.makeText(mContext, responseDetails, Toast.LENGTH_LONG).show();
+                }
             }
         }, getResources().getString(R.string.urlQuery));
     }

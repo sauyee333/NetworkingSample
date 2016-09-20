@@ -5,5 +5,6 @@
     <string name="retrofit">Retrofit</string>
     <string name="rxjava">RxJava</string>
 
+    <string name="urlPath">https://ajax.googleapis.com/ajax/services/feed/load?v=1.0&amp;q=</string>
     <string name="urlQuery">http://www.digg.com/rss/index.xml</string>
 </resources>

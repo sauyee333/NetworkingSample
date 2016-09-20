@@ -1,6 +1,7 @@
 package com.sauyee333.networksample.network.rxjavaMethod;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import com.sauyee333.networksample.network.rxjavaMethod.listener.ProgressChangeListener;
 import com.sauyee333.networksample.network.rxjavaMethod.listener.SubscribeOnNextListener;
@@ -49,6 +50,9 @@ public class ProgressSubscriber<T> extends Subscriber<T> implements ProgressChan
     @Override
     public void onError(Throwable e) {
         dismissProgressDialog();
+        if (mContext != null) {
+            Toast.makeText(mContext, e.toString(), Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override

@@ -1,0 +1,52 @@
+{
+  "responseData": {
+    "feed": {
+      "author": "",
+      "description": "Digg - What the Internet is talking about right now",
+      "entries": [
+        {
+          "author": "",
+          "categories": [],
+          "content": "Welcome to Amana, the tech-savvy, religious community that gave us the freezer.",
+          "contentSnippet": "Welcome to Amana, the tech-savvy, religious community that gave us the freezer.",
+          "link": "http://on.digg.com/2cgpraU",
+          "publishedDate": "Sun, 18 Sep 2016 17:58:05 -0700",
+          "title": "My Mom Grew Up In A Utopian Colony In Iowa"
+        },
+        {
+          "author": "",
+          "categories": [],
+          "content": "Feminine hygiene is getting a millennial-savvy update  —  could it leave some women behind?",
+          "contentSnippet": "Feminine hygiene is getting a millennial-savvy update  —  could it leave some women behind?",
+          "link": "http://on.digg.com/2cEAdIm",
+          "publishedDate": "Mon, 19 Sep 2016 01:39:01 -0700",
+          "title": "Silicon Valley’s Quest To Make Periods Cool"
+        },
+        {
+          "author": "",
+          "categories": [],
+          "content": "Last weekend, the Clinton campaign acknowledged that Trump supporters co-opted the Pepe meme. Here's how we got to here.",
+          "contentSnippet": "Last weekend, the Clinton campaign acknowledged that Trump supporters co-opted the Pepe meme. Here's how we got to here.",
+          "link": "http://on.digg.com/2d5JWM9",
+          "publishedDate": "Mon, 19 Sep 2016 00:39:02 -0700",
+          "title": "How Internet Trolls Won The 2016 Presidential Election"
+        },
+        {
+          "author": "",
+          "categories": [],
+          "content": "If you’re thinking about braces but don’t want to spend a fortune, SmileDirectClub‘s got you. Their aligners are invisible, affordable and shipped straight to your door. Everything’s assessed online, so you don’t even need to visit the orthodontist.",
+          "contentSnippet": "If you’re thinking about braces but don’t want to spend a fortune, SmileDirectClub‘s got you. Their aligners are invisible, ...",
+          "link": "http://on.digg.com/1Omy4NG",
+          "publishedDate": "Sat, 17 Sep 2016 05:42:03 -0700",
+          "title": "There's Never Been An Easier Way To Get Better Teeth"
+        }
+      ],
+      "feedUrl": "http://www.digg.com/rss/index.xml",
+      "link": "http://digg.com/",
+      "title": "Digg Top Stories",
+      "type": "rss20"
+    }
+  },
+  "responseDetails": null,
+  "responseStatus": 200
+}
