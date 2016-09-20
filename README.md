@@ -1,5 +1,3 @@
-# NetworkingSample
-
 Networking Sample
 ===================
 

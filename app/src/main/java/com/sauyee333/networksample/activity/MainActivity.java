@@ -1,10 +1,10 @@
 package com.sauyee333.networksample.activity;
 
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 
 import com.sauyee333.networksample.R;
 import com.sauyee333.networksample.fragment.MainFragment;
@@ -22,6 +22,14 @@ public class MainActivity extends AppCompatActivity implements MainListener {
     private void showMainFragment() {
         Fragment fragment = new MainFragment();
         showFragment(fragment, false);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+            finish();
+        }
     }
 
     private void showFragment(Fragment frag, boolean force) {
