@@ -20,7 +20,7 @@ public class RxClient {
     private Retrofit retrofit;
     private RxInterface rxInterface;
 
-    private void getClient() {
+    private RxClient() {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();

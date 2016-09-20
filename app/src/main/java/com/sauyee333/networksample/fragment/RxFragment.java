@@ -5,14 +5,15 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.sauyee333.networksample.R;
 import com.sauyee333.networksample.adapter.RowAdapter;
-import com.sauyee333.networksample.listener.RowSelectListener;
+import com.sauyee333.networksample.model.Entries;
+import com.sauyee333.networksample.model.Feed;
+import com.sauyee333.networksample.model.ResponseData;
 import com.sauyee333.networksample.model.RowInfo;
 import com.sauyee333.networksample.model.ServiceFeed;
 import com.sauyee333.networksample.network.rxjavaMethod.ProgressSubscriber;
@@ -28,13 +29,27 @@ import butterknife.ButterKnife;
 /**
  * Created by sauyee on 19/9/16.
  */
-public class RxFragment extends Fragment implements RowSelectListener {
-    private static final int MAIN_ROW_VOLLEY = 0;
-    private static final int MAIN_ROW_RETROFIT2 = 1;
+public class RxFragment extends Fragment {
     private SubscribeOnNextListener onGetServiceNext = new SubscribeOnNextListener<ServiceFeed>() {
         @Override
         public void onNext(ServiceFeed serviceFeed) {
-            _Debug("received: " + serviceFeed.getResponseStatus());
+            if (serviceFeed != null) {
+                ResponseData responseData = serviceFeed.getResponseData();
+                if (responseData != null) {
+                    Feed feed = responseData.getFeed();
+                    if (feed != null) {
+                        Entries[] entries = feed.getEntries();
+                        if (entries.length > 0) {
+                            List<RowInfo> itemList = new ArrayList<>();
+                            for (int i = 0; i < entries.length; i++) {
+                                itemList.add(new RowInfo(entries[i].getTitle()));
+                            }
+                            mAdapter = new RowAdapter(itemList, null);
+                            mRecyclerListView.setAdapter(mAdapter);
+                        }
+                    }
+                }
+            }
         }
     };
 
@@ -49,9 +64,8 @@ public class RxFragment extends Fragment implements RowSelectListener {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         ButterKnife.bind(this, view);
-//        setupListConfig();
-//        showList();
-        _Debug("oncr");
+        setupListConfig();
+        getServiceFeed();
         return view;
     }
 
@@ -63,37 +77,5 @@ public class RxFragment extends Fragment implements RowSelectListener {
         mRecyclerListView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         mRecyclerListView.setLayoutManager(layoutManager);
-    }
-
-    private void showList() {
-        List<RowInfo> itemList = getMeList();
-
-        mAdapter = new RowAdapter(itemList, RxFragment.this);
-        mRecyclerListView.setAdapter(mAdapter);
-    }
-
-    private List<RowInfo> getMeList() {
-        List<RowInfo> itemList = new ArrayList<>();
-        itemList.add(new RowInfo(getResources().getString(R.string.volley)));
-        itemList.add(new RowInfo(getResources().getString(R.string.retrofit)));
-
-        return itemList;
-    }
-
-    @Override
-    public void onRowClick(int position) {
-        _Debug("onrow click: " + position);
-        switch (position) {
-            case MAIN_ROW_VOLLEY:
-                _Debug("volley");
-                break;
-            case MAIN_ROW_RETROFIT2:
-                _Debug("retrofits");
-                break;
-        }
-    }
-
-    private static void _Debug(String str) {
-        Log.d("widget", str);
     }
 }
