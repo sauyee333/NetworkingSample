@@ -1,5 +1,7 @@
 package com.sauyee333.networksample.network.retrofitMethod;
 
+import com.sauyee333.networksample.model.response.ServiceFeed;
+
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -9,22 +11,20 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by sauyee on 19/9/16.
  */
 public class RetrofitClient {
-    public static final String BASE_URL = "https://ajax.googleapis.com/";
-    public Retrofit retrofit;
+    private static final String BASE_URL = "https://ajax.googleapis.com/";
+    private Retrofit retrofit;
+    private RetrofitInterface retrofitInterface;
 
-    public Retrofit getClient() {
-        if (retrofit == null) {
+    public RetrofitClient() {
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
 
-            HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-            interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-            OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
-
-            retrofit = new Retrofit.Builder().baseUrl(BASE_URL)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .client(client)
-                    .build();
-        }
-        return retrofit;
+        retrofit = new Retrofit.Builder().baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(client)
+                .build();
+        retrofitInterface = retrofit.create(RetrofitInterface.class);
     }
 
     private static class SingletonHolder {
@@ -33,5 +33,10 @@ public class RetrofitClient {
 
     public static RetrofitClient getInstance() {
         return SingletonHolder.INSTANCE;
+    }
+
+    public void getServiceApi(final NetworkCallback<ServiceFeed> networkCallback, String query) {
+        retrofit2.Call<ServiceFeed> call = retrofitInterface.getServiceFeed(query);
+        call.enqueue(networkCallback);
     }
 }

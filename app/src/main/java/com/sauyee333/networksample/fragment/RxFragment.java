@@ -11,11 +11,11 @@ import android.view.ViewGroup;
 
 import com.sauyee333.networksample.R;
 import com.sauyee333.networksample.adapter.RowAdapter;
-import com.sauyee333.networksample.model.Entries;
-import com.sauyee333.networksample.model.Feed;
-import com.sauyee333.networksample.model.ResponseData;
+import com.sauyee333.networksample.model.response.Entries;
+import com.sauyee333.networksample.model.response.Feed;
+import com.sauyee333.networksample.model.response.ResponseData;
 import com.sauyee333.networksample.model.RowInfo;
-import com.sauyee333.networksample.model.ServiceFeed;
+import com.sauyee333.networksample.model.response.ServiceFeed;
 import com.sauyee333.networksample.network.rxjavaMethod.ProgressSubscriber;
 import com.sauyee333.networksample.network.rxjavaMethod.RxClient;
 import com.sauyee333.networksample.network.rxjavaMethod.listener.SubscribeOnNextListener;
@@ -34,21 +34,7 @@ public class RxFragment extends Fragment {
         @Override
         public void onNext(ServiceFeed serviceFeed) {
             if (serviceFeed != null) {
-                ResponseData responseData = serviceFeed.getResponseData();
-                if (responseData != null) {
-                    Feed feed = responseData.getFeed();
-                    if (feed != null) {
-                        Entries[] entries = feed.getEntries();
-                        if (entries.length > 0) {
-                            List<RowInfo> itemList = new ArrayList<>();
-                            for (int i = 0; i < entries.length; i++) {
-                                itemList.add(new RowInfo(entries[i].getTitle()));
-                            }
-                            mAdapter = new RowAdapter(itemList, null);
-                            mRecyclerListView.setAdapter(mAdapter);
-                        }
-                    }
-                }
+                displayTitle(serviceFeed.getResponseData());
             }
         }
     };
@@ -64,13 +50,31 @@ public class RxFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         ButterKnife.bind(this, view);
+        mContext = getContext();
         setupListConfig();
         getServiceFeed();
         return view;
     }
 
     private void getServiceFeed() {
-        RxClient.getInstance().getServiceApi(new ProgressSubscriber<ServiceFeed>(onGetServiceNext, mContext, true, true), "http://www.digg.com/rss/index.xml");
+        RxClient.getInstance().getServiceApi(new ProgressSubscriber<ServiceFeed>(onGetServiceNext, mContext, true, true), getResources().getString(R.string.urlQuery));
+    }
+
+    private void displayTitle(ResponseData responseData) {
+        if (responseData != null) {
+            Feed feed = responseData.getFeed();
+            if (feed != null) {
+                Entries[] entries = feed.getEntries();
+                if (entries.length > 0) {
+                    List<RowInfo> itemList = new ArrayList<>();
+                    for (int i = 0; i < entries.length; i++) {
+                        itemList.add(new RowInfo(entries[i].getTitle()));
+                    }
+                    mAdapter = new RowAdapter(itemList, null);
+                    mRecyclerListView.setAdapter(mAdapter);
+                }
+            }
+        }
     }
 
     private void setupListConfig() {

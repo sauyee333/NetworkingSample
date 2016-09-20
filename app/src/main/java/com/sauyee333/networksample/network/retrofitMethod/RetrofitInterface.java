@@ -1,6 +1,6 @@
 package com.sauyee333.networksample.network.retrofitMethod;
 
-import com.sauyee333.networksample.model.ServiceFeed;
+import com.sauyee333.networksample.model.response.ServiceFeed;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

@@ -1,6 +1,6 @@
 package com.sauyee333.networksample.network.rxjavaMethod;
 
-import com.sauyee333.networksample.model.ServiceFeed;
+import com.sauyee333.networksample.model.response.ServiceFeed;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -16,7 +16,7 @@ import rx.schedulers.Schedulers;
  * Created by sauyee on 19/9/16.
  */
 public class RxClient {
-    public static final String BASE_URL = "https://ajax.googleapis.com/";
+    private static final String BASE_URL = "https://ajax.googleapis.com/";
     private Retrofit retrofit;
     private RxInterface rxInterface;
 

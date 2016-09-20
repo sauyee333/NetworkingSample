@@ -4,15 +4,19 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.sauyee333.networksample.R;
 import com.sauyee333.networksample.adapter.RowAdapter;
-import com.sauyee333.networksample.listener.RowSelectListener;
 import com.sauyee333.networksample.model.RowInfo;
+import com.sauyee333.networksample.model.response.Entries;
+import com.sauyee333.networksample.model.response.Feed;
+import com.sauyee333.networksample.model.response.ResponseData;
+import com.sauyee333.networksample.model.response.ServiceFeed;
+import com.sauyee333.networksample.network.retrofitMethod.NetworkCallback;
+import com.sauyee333.networksample.network.retrofitMethod.RetrofitClient;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,10 +27,7 @@ import butterknife.ButterKnife;
 /**
  * Created by sauyee on 19/9/16.
  */
-public class RetrofitFragment extends Fragment implements RowSelectListener{
-    private static final int MAIN_ROW_VOLLEY = 0;
-    private static final int MAIN_ROW_RETROFIT2 = 1;
-
+public class RetrofitFragment extends Fragment {
     @Bind(R.id.list)
     RecyclerView mRecyclerListView;
 
@@ -38,8 +39,7 @@ public class RetrofitFragment extends Fragment implements RowSelectListener{
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         ButterKnife.bind(this, view);
         setupListConfig();
-        showList();
-        _Debug("oncr");
+        getServiceFeed();
         return view;
     }
 
@@ -49,35 +49,36 @@ public class RetrofitFragment extends Fragment implements RowSelectListener{
         mRecyclerListView.setLayoutManager(layoutManager);
     }
 
-    private void showList() {
-        List<RowInfo> itemList = getMeList();
+    private void getServiceFeed() {
+        RetrofitClient.getInstance().getServiceApi(new NetworkCallback<ServiceFeed>() {
+            @Override
+            protected void onSuccess(ServiceFeed serviceFeed) {
+                if (serviceFeed != null) {
+                    displayTitle(serviceFeed.getResponseData());
+                }
+            }
 
-        mAdapter = new RowAdapter(itemList, RetrofitFragment.this);
-        mRecyclerListView.setAdapter(mAdapter);
+            @Override
+            protected void onFailure(boolean isNetworkFailure, String responseDetails, String responseStatus) {
+
+            }
+        }, getResources().getString(R.string.urlQuery));
     }
 
-    private List<RowInfo> getMeList() {
-        List<RowInfo> itemList = new ArrayList<>();
-        itemList.add(new RowInfo(getResources().getString(R.string.volley)));
-        itemList.add(new RowInfo(getResources().getString(R.string.retrofit)));
-
-        return itemList;
-    }
-
-    @Override
-    public void onRowClick(int position) {
-        _Debug("onrow click: " + position);
-        switch (position){
-            case MAIN_ROW_VOLLEY:
-_Debug("volley");
-                break;
-            case MAIN_ROW_RETROFIT2:
-                _Debug("retrofits");
-                break;
+    private void displayTitle(ResponseData responseData) {
+        if (responseData != null) {
+            Feed feed = responseData.getFeed();
+            if (feed != null) {
+                Entries[] entries = feed.getEntries();
+                if (entries.length > 0) {
+                    List<RowInfo> itemList = new ArrayList<>();
+                    for (int i = 0; i < entries.length; i++) {
+                        itemList.add(new RowInfo(entries[i].getTitle()));
+                    }
+                    mAdapter = new RowAdapter(itemList, null);
+                    mRecyclerListView.setAdapter(mAdapter);
+                }
+            }
         }
-    }
-
-    private static void _Debug(String str) {
-        Log.d("widget", str);
     }
 }

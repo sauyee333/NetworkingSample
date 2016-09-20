@@ -1,4 +1,4 @@
-package com.sauyee333.networksample.model;
+package com.sauyee333.networksample.model.response;
 
 /**
  * Created by sauyee on 20/9/16.
@@ -18,9 +18,7 @@ public class ServiceFeed {
         this.responseData = responseData;
     }
 
-    public String
-
-    getResponseDetails() {
+    public String getResponseDetails() {
         return responseDetails;
     }
 

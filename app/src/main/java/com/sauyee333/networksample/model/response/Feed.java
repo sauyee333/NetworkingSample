@@ -1,4 +1,6 @@
-package com.sauyee333.networksample.model;
+package com.sauyee333.networksample.model.response;
+
+import com.sauyee333.networksample.model.response.Entries;
 
 /**
  * Created by sauyee on 20/9/16.
