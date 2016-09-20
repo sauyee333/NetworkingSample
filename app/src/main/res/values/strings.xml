@@ -2,7 +2,9 @@
     <string name="app_name">NetworkSample</string>
 
     <string name="volley">Volley</string>
-    <string name="retrofit2">Retrofit2</string>
+    <string name="retrofit">Retrofit</string>
+    <string name="rxjava">RxJava</string>
 
-    <string name="url">https://ajax.googleapis.com/ajax/services/feed/load?v=1.0&amp;q=http%3A%2F%2Fwww.digg.com%2Frss%2Findex.xml</string>
+    <string name="urlPath">https://ajax.googleapis.com/ajax/services/feed/load?v=1.0&amp;q=</string>
+    <string name="urlQuery">http://www.digg.com/rss/index.xml</string>
 </resources>

@@ -1,16 +1,17 @@
 package com.sauyee333.networksample.fragment;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.sauyee333.networksample.R;
 import com.sauyee333.networksample.adapter.RowAdapter;
+import com.sauyee333.networksample.listener.MainListener;
 import com.sauyee333.networksample.listener.RowSelectListener;
 import com.sauyee333.networksample.model.RowInfo;
 
@@ -23,14 +24,16 @@ import butterknife.ButterKnife;
 /**
  * Created by sauyee on 19/9/16.
  */
-public class MainFragment extends Fragment implements RowSelectListener{
+public class MainFragment extends Fragment implements RowSelectListener {
     private static final int MAIN_ROW_VOLLEY = 0;
-    private static final int MAIN_ROW_RETROFIT2 = 1;
+    private static final int MAIN_ROW_RETROFIT = 1;
+    private static final int MAIN_ROW_RXJAVA = 2;
 
     @Bind(R.id.list)
     RecyclerView mRecyclerListView;
 
     private RowAdapter mAdapter;
+    private MainListener mListener;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -39,8 +42,18 @@ public class MainFragment extends Fragment implements RowSelectListener{
         ButterKnife.bind(this, view);
         setupListConfig();
         showList();
-        _Debug("oncr");
         return view;
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            mListener = (MainListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement BrowseItemsListener");
+        }
     }
 
     private void setupListConfig() {
@@ -59,25 +72,36 @@ public class MainFragment extends Fragment implements RowSelectListener{
     private List<RowInfo> getMeList() {
         List<RowInfo> itemList = new ArrayList<>();
         itemList.add(new RowInfo(getResources().getString(R.string.volley)));
-        itemList.add(new RowInfo(getResources().getString(R.string.retrofit2)));
+        itemList.add(new RowInfo(getResources().getString(R.string.retrofit)));
+        itemList.add(new RowInfo(getResources().getString(R.string.rxjava)));
 
         return itemList;
     }
 
     @Override
     public void onRowClick(int position) {
-        _Debug("onrow click: " + position);
-        switch (position){
-            case MAIN_ROW_VOLLEY:
-_Debug("volley");
-                break;
-            case MAIN_ROW_RETROFIT2:
-                _Debug("retrofits");
-                break;
+        switch (position) {
+            case MAIN_ROW_VOLLEY: {
+                VolleyFragment fragment = new VolleyFragment();
+                if (mListener != null) {
+                    mListener.onShowFragment(fragment, false);
+                }
+            }
+            break;
+            case MAIN_ROW_RETROFIT: {
+                RetrofitFragment fragment = new RetrofitFragment();
+                if (mListener != null) {
+                    mListener.onShowFragment(fragment, false);
+                }
+            }
+            break;
+            case MAIN_ROW_RXJAVA: {
+                RxFragment fragment = new RxFragment();
+                if (mListener != null) {
+                    mListener.onShowFragment(fragment, false);
+                }
+            }
+            break;
         }
-    }
-
-    private static void _Debug(String str) {
-        Log.d("widget", str);
     }
 }
